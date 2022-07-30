@@ -9,6 +9,10 @@ headers = {
     }
 
 def get_news():
+    """
+    Get news from astronomy news web page ans creating json(news.json)
+    with 10 last astronomy news
+    """
     r = requests.get(url=url, headers=headers)
     if r.status_code == 200:
         articles_dict = {}

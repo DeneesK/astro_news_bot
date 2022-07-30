@@ -26,7 +26,11 @@ async def send_welcome(message: types.Message):
 
 @dp.message_handler(commands=['all_news', 'last_news', '3'])
 async def send_news(message: types.Message):
-    get_news()
+    """
+    The bot sends the user the number of news that he has chosen
+    """
+    # The parser function creates a json(news.json) with the latest 10 astronomy news
+    get_news()  
 
     with open('news.json', encoding='UTF-8') as file:
         news_dict = json.load(file)
