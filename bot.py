@@ -12,16 +12,29 @@ TOKEN = os.environ['AB_TOKEN_API']
 bot = Bot(token=TOKEN)
 dp = Dispatcher(bot)
 
+async def set_default_commands(dp):
+    """
+    Creates a menu for sending commands to the bot
+    """
+    await dp.bot.set_my_commands(
+        [
+            types.BotCommand('help', 'Help'), 
+            types.BotCommand("all_news", "Get last 10 astronomy news"), 
+            types.BotCommand("3", "Get last 3 astronomy news"),
+            types.BotCommand("last_news", "Get last one"),
+        ]
+    )
+
+
 @dp.message_handler(commands=['start', 'help'])
 async def send_welcome(message: types.Message):
     """
-    This handler will be called when user sends `/start` command
+    This handler will be called when user sends `/start` or '/help' command
     """
-    starts_button = ['/all_news', '/last_news', '/3', '/help']
-    keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    [keyboard.add(button) for button in starts_button]
-    text = "Hi! I'm astronews_bot and I can send you news on planets, cosmology, NASA, space missions, and more. Just choose what you need from menu. /all_news - send you last 10 news, /last_news send last one or get last /3 news."
-    await message.answer(text=text, reply_markup=keyboard)
+    await set_default_commands(dp)
+    text = "Hi! I'm astronews_bot and I can send you news on planets, cosmology, NASA, space missions, and more. Just choose what you need from menu(blue button in the lower left corner)."
+    await message.answer(text=text)
+    await set_default_commands(dp)
 
 
 @dp.message_handler(commands=['all_news', 'last_news', '3'])
